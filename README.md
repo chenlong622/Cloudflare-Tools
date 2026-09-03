@@ -26,6 +26,6 @@
 
 本工具的部分功能基于以下开源项目：
 
-- [warpscout]([这里填写 GitHub 仓库地址](https://github.com/vernette/warpscout))
+- [warpscout](https://github.com/vernette/warpscout)
 
 感谢 `warpscout` 项目的开发者和贡献者。
