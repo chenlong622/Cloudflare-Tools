@@ -1,6 +1,6 @@
 @echo off
 setlocal EnableExtensions DisableDelayedExpansion
-title WARP一键注册工具 by 阿尔忒弥斯实验室(YouTube)
+title Cloudflare WARP Node Scanner Artemis Lab (From YouTube) V1.0
 set "WARP_SCRIPT_DIR=%~dp0"
 set "WARP_SCRIPT_FILE=%~f0"
 rem Load the embedded PowerShell source. No external PS1 file is created.
