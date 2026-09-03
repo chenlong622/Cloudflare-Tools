@@ -79,28 +79,17 @@ try {
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
     if (-not (Test-Path -LiteralPath $warpscoutExe -PathType Leaf)) {
-        $headers = @{ 'User-Agent' = 'WARP-windows-bat' }
-        try {
-            $release = Invoke-RestMethod -Uri 'https://api.github.com/repos/vernette/warpscout/releases/latest' -Headers $headers -UseBasicParsing
-        } catch {
-            throw 'Could not get the latest warpscout release from GitHub. Check your network and try again.'
-        }
-        $asset = @($release.assets | Where-Object {
-            $_.name -match '(?i)(?=.*(?:windows|win))(?=.*(?:amd64|x86_64|x64)).*\.zip$'
-        }) | Select-Object -First 1
-        if ($null -eq $asset -or [string]::IsNullOrWhiteSpace($asset.browser_download_url)) {
-            throw 'The latest warpscout release does not contain a Windows AMD64 ZIP asset.'
-        }
-        Write-Host ('Downloading warpscout ' + $release.tag_name + '...')
+        $warpscoutUrl = 'https://pub-453eabf12730419aa802d8e819e1333d.r2.dev/warpscout_0.16.0_windows_amd64.zip'
+        Write-Host 'Downloading warpscout 0.16.0 from R2...'
         Remove-Item -LiteralPath $zipFile -Force -ErrorAction SilentlyContinue
         try {
-            Invoke-WebRequest -Uri $asset.browser_download_url -Headers $headers -OutFile $zipFile -UseBasicParsing
+            Invoke-WebRequest -Uri $warpscoutUrl -OutFile $zipFile -UseBasicParsing
             if (-not (Test-Path -LiteralPath $zipFile -PathType Leaf) -or (Get-Item -LiteralPath $zipFile).Length -eq 0) {
-                throw 'GitHub returned an empty ZIP download.'
+                throw 'R2 returned an empty ZIP download.'
             }
             Expand-Archive -LiteralPath $zipFile -DestinationPath $warpscoutDir -Force
         } catch {
-            throw 'Could not download or extract warpscout. Check the network, disk space, and folder permissions.'
+            throw 'Could not download or extract warpscout from R2. Check the network, disk space, and folder permissions.'
         } finally {
             Remove-Item -LiteralPath $zipFile -Force -ErrorAction SilentlyContinue
         }
